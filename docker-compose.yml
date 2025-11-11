@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+# To build or run a prod container
+# docker compose up app --build
+# docker compose up app
