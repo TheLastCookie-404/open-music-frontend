@@ -7,6 +7,12 @@ export default defineNuxtConfig({
   modules: ["@nuxt/eslint", "@nuxt/icon"],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      watch: {
+        ignored: ["./.pnpm-store/**"],
+        usePolling: true,
+      },
+    },
   },
   css: ["./app/tailwind.css"],
   typescript: {
