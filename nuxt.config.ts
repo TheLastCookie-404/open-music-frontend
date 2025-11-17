@@ -18,4 +18,8 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
   },
+  components: {
+    global: true,
+    dirs: ["~/components", "~/components/common"],
+  },
 });

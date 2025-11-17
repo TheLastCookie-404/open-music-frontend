@@ -1,2 +1,8 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: synthwave --default;
+}
+
+.dev {
+  outline: 1px solid red;
+}

@@ -16,7 +16,8 @@
         "dbaeumer.vscode-eslint",
         "Nuxtr.nuxt-vscode-extentions",
         "esbenp.prettier-vscode",
-        "bradgashler.htmltagwrap"
+        "bradgashler.htmltagwrap",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   }
