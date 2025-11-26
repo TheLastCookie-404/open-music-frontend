@@ -22,4 +22,9 @@ export default defineNuxtConfig({
     global: true,
     dirs: ["~/components", "~/components/common"],
   },
+  runtimeConfig: {
+    app: {
+      apiUrl: process.env["API_URL"],
+    },
+  },
 });
