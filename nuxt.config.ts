@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/eslint", "@nuxt/icon"],
+  modules: ["@nuxt/eslint", "@nuxt/icon", "nuxt-auth-sanctum"],
   vite: {
     plugins: [tailwindcss()],
     server: {
@@ -26,5 +26,13 @@ export default defineNuxtConfig({
     app: {
       apiUrl: process.env["API_URL"],
     },
+  },
+  sanctum: {
+    baseUrl: "http://localhost:8000",
+    mode: "cookie",
+    endpoints: {
+      login: "/api/login",
+    },
+    // mode: "cookie",
   },
 });
