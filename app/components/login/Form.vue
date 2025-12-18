@@ -3,66 +3,84 @@
     <div class="card-body">
       <fieldset class="fieldset">
         <label class="label">Email</label>
-        <input
-          v-model="userCredentials.email"
-          type="email"
-          class="input w-full"
-          placeholder="Email" />
+        <input v-model="email" type="email" class="input w-full" placeholder="Email" />
         <label class="label">Password</label>
-        <input
-          v-model="userCredentials.password"
-          type="password"
-          class="input w-full"
-          placeholder="Password" />
+        <input v-model="password" type="password" class="input w-full" placeholder="Password" />
         <div><a class="link link-hover">Forgot password?</a></div>
         <button @click="() => logIn()" class="btn btn-neutral mt-4">Login</button>
-        <button @click="() => test()" class="btn btn-neutral mt-4">Test</button>
+        <button @click="() => profile()" class="btn btn-neutral mt-4">Profile</button>
         <button @click="() => logOut()" class="btn btn-neutral mt-4">Logout</button>
-        {{ email }} {{ password }} {{ userCredentials }}
+        {{ email }} {{ password }} {{ config.app.apiUrl }}
       </fieldset>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { useRuntimeConfig } from "#app";
+  const config = useRuntimeConfig();
+
   const email = ref<string | null>();
   const password = ref<string | null>();
 
-  const { login, logout } = useSanctumAuth();
-  useSanctumClient;
-
-  const userCredentials = reactive({
-    email: email.value,
-    password: password.value,
-  });
+  const accessToken = useLocalStorage<string>("access_token", "");
+  const refreshToken = useLocalStorage<string>("refresh_token", "");
 
   async function logIn() {
-    await login(userCredentials)
-      .then((resp) => {
-        console.log(resp);
+    await $fetch(`${config.app.apiUrl}/api/login`, {
+      method: "POST",
+      body: {
+        email: email.value,
+        password: password.value,
+      },
+    })
+      .then((response: any) => {
+        console.log(response);
+        accessToken.value = response["access_token"];
+        refreshToken.value = response["access_token"];
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((error) => console.error(error));
   }
 
-  async function test() {
-    useSanctumFetch("/api/test")
-      .then((resp) => {
-        console.log(resp.data.value);
+  async function profile() {
+    refresh();
+    await $fetch(`${config.app.apiUrl}/api/profile`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`,
+      },
+    })
+      .then((response: any) => {
+        console.log(response);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((error) => console.error(error));
   }
 
   async function logOut() {
-    await logout()
-      .then((resp) => {
-        console.log(resp);
+    refresh();
+    await $fetch(`${config.app.apiUrl}/api/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken.value}`,
+      },
+    })
+      .then((response: any) => {
+        console.log(response);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((error) => console.error(error));
+  }
+
+  async function refresh() {
+    await $fetch(`${config.app.apiUrl}/api/refresh`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${refreshToken.value}`,
+      },
+    })
+      .then((response: any) => {
+        console.log(response);
+        accessToken.value = response["access_token"];
+      })
+      .catch((error) => console.error(error));
   }
 </script>
