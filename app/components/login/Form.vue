@@ -23,12 +23,13 @@
   const email = ref<string | null>();
   const password = ref<string | null>();
 
-  const accessToken = useLocalStorage<string>("access_token", "");
-  const refreshToken = useLocalStorage<string>("refresh_token", "");
-
   async function logIn() {
     await $fetch(`${config.app.apiUrl}/api/login`, {
       method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+      },
       body: {
         email: email.value,
         password: password.value,
@@ -36,32 +37,35 @@
     })
       .then((response: any) => {
         console.log(response);
-        accessToken.value = response["access_token"];
-        refreshToken.value = response["access_token"];
       })
       .catch((error) => console.error(error));
   }
 
   async function profile() {
-    refresh();
-    await $fetch(`${config.app.apiUrl}/api/profile`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken.value}`,
-      },
-    })
-      .then((response: any) => {
-        console.log(response);
+    await $fetch(`${config.app.apiUrl}/api/refresh`, {
+      method: "POST",
+      credentials: "include",
+    }).then(async () => {
+      await $fetch(`${config.app.apiUrl}/api/profile`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
       })
-      .catch((error) => console.error(error));
+        .then((response: any) => {
+          console.log(response);
+        })
+        .catch((error) => console.error(error));
+    });
   }
 
   async function logOut() {
-    refresh();
     await $fetch(`${config.app.apiUrl}/api/logout`, {
       method: "POST",
+      credentials: "include",
       headers: {
-        Authorization: `Bearer ${accessToken.value}`,
+        Accept: "application/json",
       },
     })
       .then((response: any) => {
@@ -70,17 +74,17 @@
       .catch((error) => console.error(error));
   }
 
-  async function refresh() {
-    await $fetch(`${config.app.apiUrl}/api/refresh`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${refreshToken.value}`,
-      },
-    })
-      .then((response: any) => {
-        console.log(response);
-        accessToken.value = response["access_token"];
-      })
-      .catch((error) => console.error(error));
-  }
+  // async function refresh() {
+  //   await $fetch(`${config.app.apiUrl}/api/refresh`, {
+  //     method: "POST",
+  //     credentials: "include",
+  //     headers: {
+  //       Accept: "application/json",
+  //     },
+  //   })
+  //     .then((response: any) => {
+  //       console.log(response);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }
 </script>

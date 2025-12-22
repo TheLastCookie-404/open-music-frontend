@@ -13,6 +13,9 @@
 </template>
 
 <script lang="ts" setup>
+  import { useRuntimeConfig } from "#app";
+  const config = useRuntimeConfig();
+
   const audiofiles = ref<FileList>();
 
   definePageMeta({
@@ -24,6 +27,7 @@
   });
 
   async function send() {
+    // refresh();
     // Create FormData object instead of plain object
     const formData = new FormData();
 
@@ -32,43 +36,24 @@
       formData.append("audio", audiofiles.value[0]);
     }
 
-    await $fetch("http://localhost:8000/api/load", {
+    await $fetch(`${config.app.apiUrl}/api/refresh`, {
       method: "POST",
-      body: formData,
-      headers: {
-        Accept: "application/json",
-      },
-    })
-      .then((response) => {
-        console.log(response);
+      credentials: "include",
+    }).then(async () => {
+      await $fetch(`${config.app.apiUrl}/api/upload`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       })
-      .catch((error) => {
-        console.error(error);
-      });
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
   }
-
-  // async function send() {
-  //   const config = {
-  //     headers: {
-  //       "Content-type": "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString(),
-  //       processData: false,
-  //       Accept: "application/json",
-  //     },
-  //   };
-
-  //   await axios
-  //     .post(
-  //       "http://localhost:8000/api/load",
-  //       {
-  //         audio: audiofiles.value?.[0],
-  //       },
-  //       config,
-  //     )
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
 </script>
