@@ -12,6 +12,7 @@ export default defineNuxtConfig({
         ignored: ["./.pnpm-store/**"],
         usePolling: true,
       },
+      allowedHosts: ["darling-fun-krill.ngrok-free.app"]
     },
   },
   css: ["./app/tailwind.css"],

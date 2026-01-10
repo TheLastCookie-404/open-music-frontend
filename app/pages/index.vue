@@ -8,6 +8,9 @@
         class="file-input" />
       <!-- <label class="label">Max size 2MB</label> -->
       <button @click="() => send()" class="btn w-fit">Send</button>
+      <br>
+      <input v-model="trackId" type="text" placeholder="Type here" class="input" />
+      <button @click="() => trackDelete()" class="btn btn-error w-fit">Delete</button>
     </fieldset>
   </div>
 </template>
@@ -17,6 +20,8 @@
   const config = useRuntimeConfig();
 
   const audiofiles = ref<FileList>();
+  
+  const trackId = ref<string>();
 
   definePageMeta({
     layout: "navigation",
@@ -55,5 +60,31 @@
           console.error(error);
         });
     });
+  }
+
+  async function trackDelete() {
+
+    await $fetch(`${config.app.apiUrl}/api/refresh`, {
+      method: "POST",
+      credentials: "include",
+    }).then(async () => {
+      await $fetch(`${config.app.apiUrl}/api/tracks/delete`, {
+        method: "POST",
+        credentials: "include",
+        body: {
+          uid: trackId.value
+        },
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+
   }
 </script>
