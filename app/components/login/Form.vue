@@ -1,26 +1,30 @@
 <template>
-  <div class="bg-base-200 fixed top-0 left-0 flex size-full items-center justify-center">
-    <div class="relative w-full max-w-sm shrink-0 shadow-2xl">
-      <div class="card card-dash border-neutral bg-base-300/50 z-50 block backdrop-blur-xl">
-        <div class="card-body">
-          <h1 class="text-base-content/75 text-center text-2xl font-light">Login</h1>
-          <fieldset class="fieldset space-y-2">
-            <label class="label">Email</label>
-            <input v-model="email" type="email" class="input w-full" placeholder="Email" />
-            <label class="label">Password</label>
-            <input v-model="password" type="password" class="input w-full" placeholder="Password" />
-            <div><a class="link link-hover">Forgot password?</a></div>
-            <button @click="() => logIn()" class="btn btn-neutral text-base-content/60 mt-4">
-              Confirm
-            </button>
-            <!-- <button @click="() => profile()" class="btn btn-neutral mt-4">Profile</button>
-            <button @click="() => logOut()" class="btn btn-neutral mt-4">Logout</button> -->
-            <!-- {{ email }} {{ password }} {{ config.app.apiUrl }} -->
-          </fieldset>
+  <div class="bg-base-200 fixed top-0 left-0 flex size-full items-center justify-center p-3">
+    <div class="w-full">
+      <h1 class="text-7xl font-thin mb-3 text-center">TLC Music</h1>
+      <p class="text-center mb-12">Enjoy the sound</p>
+      <div class="relative shrink-0 shadow-2xl w-full max-w-sm m-auto">
+        <div class="card card-border border-neutral bg-base-300/50 z-50 block backdrop-blur-xl">
+          <div class="card-body">
+            <h2 class="text-center text-2xl font-light">Login</h2>
+            <fieldset class="fieldset">
+              <label class="label">Email</label>
+              <input v-model="email" type="email" class="input w-full mb-3" placeholder="Email" />
+              <label class="label">Password</label>
+              <input v-model="password" type="password" class="input w-full" placeholder="Password" />
+              <div class="mb-3"><a class="link link-hover">Forgot password?</a></div>
+              <button @click="() => logIn()" class="btn btn-neutral text-base-content/60 mt-4">
+                Confirm
+              </button>
+              <!-- <button @click="() => profile()" class="btn btn-neutral mt-4">Profile</button>
+              <button @click="() => logOut()" class="btn btn-neutral mt-4">Logout</button> -->
+              <!-- {{ email }} {{ password }} {{ config.app.apiUrl }} -->
+            </fieldset>
+          </div>
         </div>
+        <!-- <div class="bg-primary/60 absolute top-0 right-0 size-16 rounded-full blur-3xl"></div>
+        <div class="bg-primary/60 absolute bottom-5 left-5 size-20 rounded-full blur-3xl"></div> -->
       </div>
-      <div class="bg-primary/60 absolute top-0 right-0 size-16 rounded-full blur-3xl"></div>
-      <div class="bg-primary/60 absolute bottom-5 left-5 size-20 rounded-full blur-3xl"></div>
     </div>
     <!-- <div class="relative size-fit bg-green-600">
       <div class="absolute -top-3 -left-3 size-24 bg-red-600"></div>
