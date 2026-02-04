@@ -4,14 +4,14 @@
       <h1 class="text-7xl font-thin mb-3 text-center">TLC Music</h1>
       <p class="text-center mb-12">Enjoy the sound</p>
       <div class="relative shrink-0 shadow-2xl w-full max-w-sm m-auto">
-        <div class="card card-border border-neutral bg-base-300/50 z-50 block backdrop-blur-xl">
+        <div class="card from-base-content/5 bg-linear-to-bl to-30% card-border border-neutral bg-base-300/50 z-50 block backdrop-blur-xl">
           <div class="card-body">
             <h2 class="text-center text-2xl font-light">Login</h2>
             <fieldset class="fieldset">
               <label class="label">Email</label>
-              <input v-model="email" type="email" class="input w-full mb-3" placeholder="Email" />
+              <input v-model="email" type="email" class="input bg-base-200/20 w-full mb-3" placeholder="Email" />
               <label class="label">Password</label>
-              <input v-model="password" type="password" class="input w-full" placeholder="Password" />
+              <input v-model="password" type="password" class="input bg-base-200/20 w-full" placeholder="Password" />
               <div class="mb-3"><a class="link link-hover">Forgot password?</a></div>
               <button @click="() => logIn()" class="btn btn-neutral text-base-content/60 mt-4">
                 Confirm
