@@ -58,6 +58,7 @@
     })
       .then((response: any) => {
         console.log(response);
+        navigateTo("/");
       })
       .catch((error) => console.error(error));
   }
