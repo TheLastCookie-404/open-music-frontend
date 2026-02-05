@@ -1,11 +1,11 @@
 <template>
   <div class="w-full">
-    <ul class="menu w-full grow">
+    <ul class="menu w-full grow p-5">
       <!-- List item -->
 
       <li v-for="item in listItems">
         <NuxtLink
-          class="dev is-drawer-close:tooltip is-drawer-close:tooltip-right"
+          class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           :data-tip="item.label"
           :to="item.link">
           <div class="flex h-7 items-center justify-center gap-3">

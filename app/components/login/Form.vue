@@ -8,7 +8,7 @@
       <div class="m-auto w-full max-w-sm shrink-0 shadow-2xl">
         <div class="card sm:card-border border-neutral overflow-clip">
           <div
-            class="card-body sm:bg-base-100/80 from-base-content/5 bg-linear-to-bl bg-none to-30% backdrop-blur-xl">
+            class="card-body sm:bg-base-300/80 from-base-content/5 bg-linear-to-bl bg-none to-30% backdrop-blur-xl">
             <!-- <h2 class="text-center text-2xl font-light">Login</h2> -->
             <fieldset class="fieldset">
               <label class="label">Email</label>
