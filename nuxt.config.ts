@@ -12,7 +12,7 @@ export default defineNuxtConfig({
         ignored: ["./.pnpm-store/**"],
         usePolling: true,
       },
-      allowedHosts: ["darling-fun-krill.ngrok-free.app"]
+      allowedHosts: ["darling-fun-krill.ngrok-free.app"],
     },
   },
   css: ["./app/tailwind.css"],
@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     dirs: ["~/components", "~/components/common"],
   },
   runtimeConfig: {
-    app: {
+    public: {
       apiUrl: process.env["API_URL"],
     },
   },
