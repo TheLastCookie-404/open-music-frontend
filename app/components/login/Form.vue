@@ -1,8 +1,9 @@
 <template>
   <div class="bg-base-200 fixed top-0 left-0 flex size-full items-center justify-center">
     <div class="w-full">
-      <h1 class="mb-3 text-center text-6xl font-thin sm:text-7xl">TLC Music</h1>
-      <p class="text-base-content mb-5 text-center font-light sm:mb-12 sm:font-normal">
+      <h1 class="mb-3 text-center text-6xl font-thin tracking-wide sm:text-7xl">TLC Music</h1>
+      <p
+        class="text-base-content mb-5 text-center font-light tracking-wider sm:mb-12 sm:font-normal">
         Enjoy the sound
       </p>
       <div class="m-auto w-full max-w-sm shrink-0 shadow-2xl">

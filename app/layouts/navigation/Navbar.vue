@@ -18,6 +18,7 @@
       </svg>
     </label>
     <!-- <div class="px-4">Navbar Title</div> -->
+
     <slot />
   </nav>
 </template>
