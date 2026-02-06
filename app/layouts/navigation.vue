@@ -28,7 +28,7 @@
   import Navbar from "@/layouts/navigation/Navbar.vue";
   import Sidebar from "@/layouts/navigation/Sidebar.vue";
 
-  const isSidebarOpen = useLocalStorage<boolean>("isSidebarOpen", false);
+  const isSidebarOpen = useLocalStorage<boolean>("isSidebarOpen", true);
 
   const navbarList = [
     {
