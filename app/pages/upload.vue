@@ -10,7 +10,8 @@
       <button @click="() => send()" class="btn w-fit">Send</button>
       <br />
       <input v-model="trackId" type="text" placeholder="Type here" class="input" />
-      <button @click="() => trackDelete()" class="btn btn-error w-fit">Delete</button>
+      <button @click="() => trackDelete()" class="btn btn-error mb-12 w-fit">Delete</button>
+      <button @click="() => logout()" class="btn btn-error w-fit">Logout</button>
     </fieldset>
   </div>
 </template>
@@ -41,11 +42,11 @@
       formData.append("audio", audiofiles.value[0]);
     }
 
-    await $fetch(`${config.app.apiUrl}/api/refresh`, {
+    await $fetch(`${config.public.apiUrl}/api/refresh`, {
       method: "POST",
       credentials: "include",
     }).then(async () => {
-      await $fetch(`${config.app.apiUrl}/api/upload`, {
+      await $fetch(`${config.public.apiUrl}/api/upload`, {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -63,16 +64,38 @@
   }
 
   async function trackDelete() {
-    await $fetch(`${config.app.apiUrl}/api/refresh`, {
+    await $fetch(`${config.public.apiUrl}/api/refresh`, {
       method: "POST",
       credentials: "include",
     }).then(async () => {
-      await $fetch(`${config.app.apiUrl}/api/tracks/delete`, {
+      await $fetch(`${config.public.apiUrl}/api/tracks/delete`, {
         method: "POST",
         credentials: "include",
         body: {
-          uid: trackId.value,
+          // uid: trackId.value,
+          id: trackId.value,
         },
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+  }
+
+  async function logout() {
+    await $fetch(`${config.public.apiUrl}/api/refresh`, {
+      method: "POST",
+      credentials: "include",
+    }).then(async () => {
+      await $fetch(`${config.public.apiUrl}/api/logout`, {
+        method: "POST",
+        credentials: "include",
         headers: {
           Accept: "application/json",
         },
