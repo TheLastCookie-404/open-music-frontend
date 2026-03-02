@@ -42,7 +42,12 @@
               <td>{{ track.artist }}</td>
               <td>{{ track.playtime }}</td>
               <td>
-                <button @click="() => trackDelete(track.id)" class="btn btn-xs btn-error w-fit">
+                <button
+                  :disabled="
+                    track.uploaded_by.name !== profile?.name && profile?.role !== 'superadmin'
+                  "
+                  @click="() => trackDelete(track.id)"
+                  class="btn btn-xs btn-error w-fit">
                   Delete
                 </button>
               </td>
@@ -50,6 +55,7 @@
           </tbody>
         </table>
       </div>
+      <!-- <pre>{{ profile }}</pre> -->
       <!-- <pre>{{ data }}</pre> -->
     </fieldset>
   </div>
@@ -62,6 +68,10 @@
     found: number;
     tracks: {
       id: string;
+      uploaded_by: {
+        name: string;
+        role: string;
+      };
       title: string;
       artist: string;
       playtime: string;
@@ -69,10 +79,13 @@
     }[];
   }
 
+  type Profile = { name: string; role: string };
+
   const config = useRuntimeConfig();
 
   const audiofiles = ref<FileList>();
   const trackId = ref<string>();
+  const profile = ref<Profile>();
 
   const { data, refresh } = await useFetch<TracksResponse>(`${config.public.apiUrl}/api/tracks`, {
     retry: 3,
@@ -85,6 +98,10 @@
 
   watchEffect(() => {
     console.log(audiofiles.value?.[0]);
+  });
+
+  onMounted(() => {
+    getProfile();
   });
 
   async function send() {
@@ -160,6 +177,28 @@
       })
         .then((response) => {
           console.log(response);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+  }
+
+  async function getProfile() {
+    await $fetch(`${config.public.apiUrl}/api/refresh`, {
+      method: "POST",
+      credentials: "include",
+    }).then(async () => {
+      await $fetch(`${config.public.apiUrl}/api/profile`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          console.log(response);
+          profile.value = response as Profile;
         })
         .catch((error) => {
           console.error(error);
