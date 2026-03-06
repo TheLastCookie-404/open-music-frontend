@@ -60,10 +60,10 @@
     <div class="mt-auto flex items-center justify-center gap-3 p-6">
       <div class="avatar avatar-placeholder">
         <div class="bg-neutral text-neutral-content w-9 rounded-full">
-          <span>{{ profile.name[0] }}</span>
+          <span>{{ profile?.name[0] ?? "U" }}</span>
         </div>
       </div>
-      <div class="is-drawer-close:hidden w-full text-sm">{{ profile.name }}</div>
+      <div class="is-drawer-close:hidden w-full text-sm">{{ profile?.name ?? "Unknown" }}</div>
     </div>
   </div>
 </template>
