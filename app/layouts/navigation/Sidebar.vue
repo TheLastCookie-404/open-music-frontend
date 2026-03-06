@@ -60,15 +60,19 @@
     <div class="mt-auto flex items-center justify-center gap-3 p-6">
       <div class="avatar avatar-placeholder">
         <div class="bg-neutral text-neutral-content w-9 rounded-full">
-          <span>SY</span>
+          <span>{{ profile.name[0] }}</span>
         </div>
       </div>
-      <div class="is-drawer-close:hidden w-full text-sm">Your profile</div>
+      <div class="is-drawer-close:hidden w-full text-sm">{{ profile.name }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+  type Profile = { name: string; role: string };
+
+  const profile = useState<Profile>("profile");
+
   defineProps<{
     listItems: {
       link: string;

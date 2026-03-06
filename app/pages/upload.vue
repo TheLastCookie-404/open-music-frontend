@@ -85,7 +85,7 @@
 
   const audiofiles = ref<FileList>();
   const trackId = ref<string>();
-  const profile = ref<Profile>();
+  const profile = useState<Profile>("profile");
 
   const { data, refresh } = await useFetch<TracksResponse>(`${config.public.apiUrl}/api/tracks`, {
     retry: 3,
