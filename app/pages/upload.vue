@@ -21,6 +21,7 @@
               <th>Title</th>
               <th>Artist</th>
               <th>Playtime</th>
+              <th>Uploaded By</th>
               <th>Delete?</th>
             </tr>
           </thead>
@@ -41,6 +42,7 @@
               <td>{{ track.title }}</td>
               <td>{{ track.artist }}</td>
               <td>{{ track.playtime }}</td>
+              <td>{{ track.uploaded_by.name }}</td>
               <td>
                 <button
                   :disabled="
