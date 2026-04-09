@@ -27,8 +27,8 @@
           </thead>
           <tbody>
             <!-- row 1 -->
-            <tr v-if="data?.tracks" v-for="(track, index) in data.tracks" :key="track.id">
-              <th>{{ index + 1 }}</th>
+            <tr v-if="data?.data" v-for="(track, index) in data.data" :key="track.id">
+              <th>{{ index + 1 * data.meta.from }}</th>
               <td>
                 <div class="rounded-field float-right size-10 overflow-hidden">
                   <img
@@ -57,9 +57,13 @@
           </tbody>
         </table>
       </div>
-      <!-- <pre>{{ profile }}</pre> -->
-      <!-- <pre>{{ data }}</pre> -->
     </fieldset>
+    <div v-if="data?.links" class="join mt-4">
+      <button :disabled="data.links.prev === null" @click="currentPage--" class="join-item btn">«</button>
+      <button class="join-item btn">Page {{ data.meta.current_page }}</button>
+      <button :disabled="data.links.next === null" @click="currentPage++"class="join-item btn">»</button>
+    </div>
+    <!-- <pre>{{ currentPage }}</pre> -->
   </div>
 </template>
 
@@ -68,7 +72,7 @@
 
   interface TracksResponse {
     found: number;
-    tracks: {
+    data: {
       id: string;
       uploaded_by: {
         name: string;
@@ -79,6 +83,14 @@
       playtime: string;
       artwork_url: string;
     }[];
+    links: {
+      prev: string | null;
+      next: string | null;
+    },
+    meta: {
+      current_page: number,
+      from: number
+    }
   }
 
   type Profile = { name: string; role: string };
@@ -88,8 +100,12 @@
   const audiofiles = ref<FileList>();
   const trackId = ref<string>();
   const profile = useState<Profile>("profile");
+  const currentPage = useLocalStorage<number>("page", 1);
 
   const { data, refresh } = await useFetch<TracksResponse>(`${config.public.apiUrl}/api/tracks`, {
+    query: {
+      page: currentPage
+    },
     retry: 3,
     retryDelay: 1000,
   });
@@ -104,6 +120,10 @@
 
   onMounted(() => {
     getProfile();
+  });
+
+  onUnmounted(() => {
+    currentPage.value = data.value?.meta.current_page;
   });
 
   async function send() {
