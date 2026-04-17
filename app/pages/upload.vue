@@ -39,7 +39,11 @@
                   <div v-else class="bg-base-300 h-full"></div>
                 </div>
               </td>
-              <td>{{ track.title }}</td>
+              <td
+                @click="((currentTrack = track.audio_url), (currentTrackTitle = track.title))"
+                class="hover:link">
+                {{ track.title }}
+              </td>
               <td>{{ track.artist }}</td>
               <td>{{ track.playtime }}</td>
               <td>{{ track.uploaded_by.name }}</td>
@@ -59,10 +63,21 @@
       </div>
     </fieldset>
     <div v-if="data?.links" class="join mt-4">
-      <button :disabled="data.links.prev === null" @click="currentPage--" class="join-item btn">«</button>
+      <button :disabled="data.links.prev === null" @click="currentPage--" class="join-item btn">
+        «
+      </button>
       <button class="join-item btn">Page {{ data.meta.current_page }}</button>
-      <button :disabled="data.links.next === null" @click="currentPage++"class="join-item btn">»</button>
+      <button :disabled="data.links.next === null" @click="currentPage++" class="join-item btn">
+        »
+      </button>
     </div>
+    <div class="mt-4 flex items-center gap-4">
+      <button @click="playing = !playing" class="btn btn-circle">
+        <Icon :name="playing ? 'ph:pause-duotone' : 'ph:play-duotone'" />
+      </button>
+      <span class="text-sm">{{ currentTrackTitle }}</span>
+    </div>
+    <audio @canplay="playing = true" ref="audio"></audio>
     <!-- <pre>{{ currentPage }}</pre> -->
   </div>
 </template>
@@ -82,15 +97,16 @@
       artist: string;
       playtime: string;
       artwork_url: string;
+      audio_url: string;
     }[];
     links: {
       prev: string | null;
       next: string | null;
-    },
+    };
     meta: {
-      current_page: number,
-      from: number
-    }
+      current_page: number;
+      from: number;
+    };
   }
 
   type Profile = { name: string; role: string };
@@ -99,12 +115,19 @@
 
   const audiofiles = ref<FileList>();
   const trackId = ref<string>();
+  const currentTrack = shallowRef<MaybeRefOrGetter>();
+  const currentTrackTitle = ref<string>();
   const profile = useState<Profile>("profile");
   const currentPage = useLocalStorage<number>("page", 1);
 
+  const audio = useTemplateRef<HTMLMediaElement>("audio");
+  const { playing } = useMediaControls(audio, {
+    src: currentTrack,
+  });
+
   const { data, refresh } = await useFetch<TracksResponse>(`${config.public.apiUrl}/api/tracks`, {
     query: {
-      page: currentPage
+      page: currentPage,
     },
     retry: 3,
     retryDelay: 1000,

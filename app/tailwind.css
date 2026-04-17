@@ -50,3 +50,10 @@ input:-webkit-autofill:active {
 .dev {
   outline: 1px solid red;
 }
+
+.bg-dotted {
+  background-image: radial-gradient(circle,
+      color-mix(in oklab, var(--color-base-content) 20%, transparent) 5%,
+      var(--color-base-200) 6%);
+  background-size: 25px 25px;
+}
