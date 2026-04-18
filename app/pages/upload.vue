@@ -40,7 +40,7 @@
                 </div>
               </td>
               <td
-                @click="((currentTrack = track.audio_url), (currentTrackTitle = track.title))"
+                @click="((currentTrackUrl = track.audio_url), (currentTrackData = track))"
                 class="hover:link">
                 {{ track.title }}
               </td>
@@ -71,14 +71,28 @@
         »
       </button>
     </div>
-    <div class="mt-4 flex items-center gap-4">
-      <button @click="playing = !playing" class="btn btn-circle">
-        <Icon :name="playing ? 'ph:pause-duotone' : 'ph:play-duotone'" />
-      </button>
-      <span class="text-sm">{{ currentTrackTitle }}</span>
-    </div>
-    <audio @canplay="playing = true" ref="audio"></audio>
     <!-- <pre>{{ currentPage }}</pre> -->
+    <div class="flex bg-base-300 w-sm h-20 items-center p-4 gap-4 rounded-box mt-6">
+      <div v-if="!currentTrackData" class="size-12 rounded-box bg-base-200"></div>
+      <template v-else>
+        <audio @canplay="playing = true" ref="audio" />
+        <div class="shrink-0">
+          <img class="size-12 rounded-field" :src="currentTrackData?.artwork_url"/>
+        </div>
+        <div class="w-full overflow-hidden">
+          <div class="truncate">{{ currentTrackData?.title }}</div>
+          <div class="text-xs uppercase font-semibold opacity-60 truncate">{{ currentTrackData.playtime }} {{ currentTrackData?.artist }}</div>
+        </div>
+      </template>
+      <div class="ml-auto flex shrink-0">
+        <button class="btn btn-square btn-ghost text-xl">
+          <Icon name="ph:heart"/>
+        </button>
+        <button :disabled="!currentTrackData" @click="playing = !playing" class="btn btn-square btn-ghost text-xl">
+          <Icon :name="playing ? 'ph:pause' : 'ph:play'" />
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -115,14 +129,19 @@
 
   const audiofiles = ref<FileList>();
   const trackId = ref<string>();
-  const currentTrack = shallowRef<MaybeRefOrGetter>();
-  const currentTrackTitle = ref<string>();
+  const currentTrackUrl = shallowRef<MaybeRefOrGetter>();
+  const currentTrackData = shallowRef<{
+    title?: string;
+    artist?: string;
+    playtime?: string;
+    artwork_url?: string;
+  }>();
   const profile = useState<Profile>("profile");
   const currentPage = useLocalStorage<number>("page", 1);
 
   const audio = useTemplateRef<HTMLMediaElement>("audio");
   const { playing } = useMediaControls(audio, {
-    src: currentTrack,
+    src: currentTrackUrl,
   });
 
   const { data, refresh } = await useFetch<TracksResponse>(`${config.public.apiUrl}/api/tracks`, {
