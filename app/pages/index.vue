@@ -25,7 +25,12 @@
             <div class="mb-1.5 truncate text-xs font-semibold uppercase opacity-60">
               {{ currentTrackData.playtime }} {{ currentTrackData?.artist }}
             </div>
-            <input type="range" min="0" max="100" v-model="currentTime" class="range range-2xs" />
+            <input
+              type="range"
+              min="0"
+              :max="currentTrackData.playtime_seconds"
+              v-model="currentTime"
+              class="range [--range-thumb-size:8px]" />
           </div>
         </template>
         <div class="ml-auto flex shrink-0">
@@ -118,6 +123,7 @@
       title: string;
       artist: string;
       playtime: string;
+      playtime_seconds: number;
       artwork_url: string;
       audio_url: string;
     }[];
@@ -142,6 +148,7 @@
     title?: string;
     artist?: string;
     playtime?: string;
+    playtime_seconds?: number;
     artwork_url?: string;
   }>();
   const profile = useState<Profile>("profile");
