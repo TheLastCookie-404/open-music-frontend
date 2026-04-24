@@ -57,3 +57,11 @@ input:-webkit-autofill:active {
       var(--color-base-200) 6%);
   background-size: 25px 25px;
 }
+
+.range-2xs {
+  @layer daisyui.modifier {
+    --range-thumb-size: calc(var(--size-selector, 0.5rem
+          /* 2px */
+        ) * 2);
+  }
+}

@@ -14,7 +14,7 @@
       </div>
       <button @click="() => send()" class="btn w-fit">Send</button>
       <div class="bg-base-300 rounded-box my-6 flex h-20 w-sm items-center gap-4 p-4">
-        <div v-if="!currentTrackData" class="rounded-box bg-base-200 size-12"></div>
+        <div v-if="!currentTrackData" class="rounded-box bg-base-200 size-12 shrink-0"></div>
         <template v-else>
           <audio @canplay="playing = true" ref="audio" />
           <div class="shrink-0">
@@ -22,9 +22,10 @@
           </div>
           <div class="w-full overflow-hidden">
             <div class="truncate">{{ currentTrackData?.title }}</div>
-            <div class="truncate text-xs font-semibold uppercase opacity-60">
+            <div class="mb-1.5 truncate text-xs font-semibold uppercase opacity-60">
               {{ currentTrackData.playtime }} {{ currentTrackData?.artist }}
             </div>
+            <input type="range" min="0" max="100" v-model="currentTime" class="range range-2xs" />
           </div>
         </template>
         <div class="ml-auto flex shrink-0">
@@ -147,7 +148,7 @@
   const currentPage = useLocalStorage<number>("page", 1);
 
   const audio = useTemplateRef<HTMLMediaElement>("audio");
-  const { playing } = useMediaControls(audio, {
+  const { playing, currentTime } = useMediaControls(audio, {
     src: currentTrackUrl,
   });
 
