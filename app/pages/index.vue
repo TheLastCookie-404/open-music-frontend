@@ -50,7 +50,7 @@
           <!-- head -->
           <thead>
             <tr>
-              <th></th>
+              <!-- <th></th> -->
               <th></th>
               <th>Title</th>
               <th>Artist</th>
@@ -59,10 +59,10 @@
               <th>Delete?</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody ref="trackTable">
             <!-- row 1 -->
             <tr v-if="data?.data" v-for="(track, index) in data.data" :key="track.id">
-              <th>{{ index + 1 * data.meta.from }}</th>
+              <!-- <th>{{ index + 1 * data.meta.from }}</th> -->
               <td>
                 <div class="rounded-field float-right size-10 overflow-hidden">
                   <img
@@ -151,6 +151,7 @@
     playtime_seconds?: number;
     artwork_url?: string;
   }>();
+  const trackTable = useTemplateRef("trackTable");
   const profile = useState<Profile>("profile");
   const currentPage = useLocalStorage<number>("page", 1);
 
@@ -161,6 +162,7 @@
 
   const { data, refresh } = await useFetch<TracksResponse>(`${config.public.apiUrl}/api/tracks`, {
     query: {
+      // pagination: "page",
       page: currentPage,
     },
     retry: 3,
@@ -193,11 +195,11 @@
       formData.append("audio", audiofiles.value[0]);
     }
 
-    await $fetch(`${config.public.apiUrl}/api/refresh`, {
+    await $fetch(`${config.public.apiUrl}/api/auth/refresh`, {
       method: "POST",
       credentials: "include",
     }).then(async () => {
-      await $fetch(`${config.public.apiUrl}/api/upload`, {
+      await $fetch(`${config.public.apiUrl}/api/tracks`, {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -216,7 +218,7 @@
   }
 
   async function trackDelete(trackId: string) {
-    await $fetch(`${config.public.apiUrl}/api/refresh`, {
+    await $fetch(`${config.public.apiUrl}/api/auth/refresh`, {
       method: "POST",
       credentials: "include",
     }).then(async () => {
@@ -243,11 +245,11 @@
   }
 
   async function logout() {
-    await $fetch(`${config.public.apiUrl}/api/refresh`, {
+    await $fetch(`${config.public.apiUrl}/api/auth/refresh`, {
       method: "POST",
       credentials: "include",
     }).then(async () => {
-      await $fetch(`${config.public.apiUrl}/api/logout`, {
+      await $fetch(`${config.public.apiUrl}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -264,11 +266,11 @@
   }
 
   async function getProfile() {
-    await $fetch(`${config.public.apiUrl}/api/refresh`, {
+    await $fetch(`${config.public.apiUrl}/api/auth/refresh`, {
       method: "POST",
       credentials: "include",
     }).then(async () => {
-      await $fetch(`${config.public.apiUrl}/api/profile`, {
+      await $fetch(`${config.public.apiUrl}/api/auth/profile`, {
         method: "GET",
         credentials: "include",
         headers: {
